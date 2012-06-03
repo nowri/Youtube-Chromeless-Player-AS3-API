@@ -1,4 +1,4 @@
-Youtube-Chromeless-Player-AS3-API-
+Youtube-Chromeless-Player-AS3-API
 ==================================
 
 robotlegs sample
