@@ -172,13 +172,13 @@ package module.ytchromelessplayer.view.mediator
 
 		private function seekBarBtnMouseUpHandler(e : MouseEvent) : void
 		{
-			isSeekBtnDrag = false;
 			eventMap.unmapListener(view.stage, MouseEvent.MOUSE_UP, seekBarBtnMouseUpHandler, MouseEvent);
 			eventMap.unmapListener(view.stage, MouseEvent.MOUSE_MOVE, seekBarBtnMouseMoveHandler, MouseEvent);
 			var target : MovieClip = view.skin.contents.seekBar.btn;
 			target.stopDrag();
 			view.video.seek(view.video.totalTime * (target.x - target.width / 2) / (view.skin.contents.seekBar.base.width - target.width));
 			view.video.play();
+			isSeekBtnDrag = false;
 		}
 
 		private function seekBarMouseDownHandler(e : MouseEvent) : void
