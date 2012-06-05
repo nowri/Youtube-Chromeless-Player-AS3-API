@@ -31,7 +31,7 @@ package module.ytchromelessplayer.view
 		public function YTChromelessPlayer(screen_mouse_enable : Boolean = false)
 		{
 			screenMouseEnable = screen_mouse_enable;
-			new YTChromelessPlayerContext(this);
+			context = new YTChromelessPlayerContext(this);
 		}
 
 		// --------------------------------------------------------------------------
@@ -44,6 +44,7 @@ package module.ytchromelessplayer.view
 		public var maskMap : Dictionary = new Dictionary(true);
 		public var seekBarClickableSpr : Sprite;
 		public var screenMouseEnable : Boolean;
+		private var context : YTChromelessPlayerContext;
 
 		// --------------------------------------------------------------------------
 		//
