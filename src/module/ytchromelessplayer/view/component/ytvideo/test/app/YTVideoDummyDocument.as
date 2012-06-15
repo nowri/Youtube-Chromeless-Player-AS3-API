@@ -1,10 +1,10 @@
 package module.ytchromelessplayer.view.component.ytvideo.test.app
 {
 	import com.bit101.components.PushButton;
-
+	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-
+	
 	import module.ytchromelessplayer.view.component.ytvideo.view.YTVideo;
 
 	[SWF(frameRate="30", width="640", height="360")]
@@ -14,10 +14,9 @@ package module.ytchromelessplayer.view.component.ytvideo.test.app
 
 		public function YTVideoDummyDocument()
 		{
-			video = new YTVideo();
+			video = new YTVideo(false, Vector.<int>([320, 180]));
 			addChild(video);
-			video.width = 320;
-			video.scaleY = video.scaleX;
+			
 			video.x = video.y = 100;
 			video.start("oN0tFgLcp4g", true, true);
 			new PushButton(stage, 10, 10, "togglePause", togglePause);

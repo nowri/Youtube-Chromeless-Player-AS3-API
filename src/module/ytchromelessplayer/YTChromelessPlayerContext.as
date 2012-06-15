@@ -21,10 +21,9 @@ package module.ytchromelessplayer
 			// view
 			mediatorMap.mapView(YTChromelessPlayer, YTChromelessPlayerMediator);
 			mediatorMap.mapView(MovieClip, YTChromelessPlayerBtnHoverMediator, null, false);
-
+			
 			super.startup();
 		}
 	}
 }
-
 

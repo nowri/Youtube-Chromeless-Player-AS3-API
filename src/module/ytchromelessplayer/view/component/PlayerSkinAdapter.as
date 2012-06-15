@@ -1,17 +1,26 @@
 package module.ytchromelessplayer.view.component
 {
-	public class PlayerSkinAdapter extends PlayerSkin
+	import flash.display.MovieClip;
+
+	public class PlayerSkinAdapter extends MovieClip
 	{
 		private var _contents : PlayerContents;
+		private var skin : MovieClip;
 
-		public function PlayerSkinAdapter()
+		public function PlayerSkinAdapter(skin:MovieClip)
 		{
-			_contents = new PlayerContents(content);
+			this.skin = skin.content;
+			_contents = new PlayerContents(this.skin);
 		}
 
 		public function get contents() : PlayerContents
 		{
 			return _contents;
+		}
+		
+		public function get content() : MovieClip
+		{
+			return skin;
 		}
 	}
 }

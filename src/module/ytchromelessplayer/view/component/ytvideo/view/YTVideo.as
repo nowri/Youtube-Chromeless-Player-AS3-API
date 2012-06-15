@@ -11,15 +11,17 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 	import com.google.youtube.examples.helper.core.PlayerEvent;
 	import com.google.youtube.examples.helper.core.PlayerLoader;
 	import com.google.youtube.examples.helper.core.PlayerState;
-
+	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
-
+	
 	import module.ytchromelessplayer.view.component.ytvideo.controller.events.YTVideoEvent;
-
+	
+	
 	[Event(name="UPDATE_STATE", type="module.ytchromelessplayer.view.component.ytvideo.controller.events.YTVideoEvent")]
 	[Event(name="PLAYER_READY", type="module.ytchromelessplayer.view.component.ytvideo.controller.events.YTVideoEvent")]
+	[Event(name="CHANGE_MUTE", type="module.ytchromelessplayer.view.component.ytvideo.controller.events.YTVideoEvent")]
 	public class YTVideo extends Sprite
 	{
 		// --------------------------------------------------------------------------
@@ -29,18 +31,19 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		// --------------------------------------------------------------------------
 		private static const VIDEO_SIZE : Vector.<int>=Vector.<int>([640, 360]);
 		private static const BG_COLOR : uint = 0x000000;
-
+		
 		// --------------------------------------------------------------------------
 		//
 		// Constructor
 		//
 		// --------------------------------------------------------------------------
-		public function YTVideo(screen_mouse_enable : Boolean = false)
+		public function YTVideo(screen_mouse_enable : Boolean = false, video_size:Vector.<int>=null)
 		{
 			screenMouseEnable = screen_mouse_enable;
+			videoSize = (!video_size)? VIDEO_SIZE:video_size;
 			init();
 		}
-
+		
 		// --------------------------------------------------------------------------
 		//
 		// Variables
@@ -52,7 +55,8 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		private var isLoop : Boolean;
 		private var autoStart : Boolean;
 		private var screenMouseEnable : Boolean;
-
+		private var videoSize:Vector.<int>;
+		
 		// --------------------------------------------------------------------------
 		//
 		// Accessors(a-z, getter -> setter)
@@ -61,11 +65,15 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		// ----------------------------------
 		// bufferRate
 		// ----------------------------------
+		public function get bytesLoaded():Number{return ytPlayerHelper.player.getVideoBytesLoaded();}
+		public function get bytesTotal():Number{return ytPlayerHelper.player.getVideoBytesTotal();}
+		public function get bytesStart():Number{return ytPlayerHelper.player.getVideoStartBytes();}
+		
 		public function get bufferRate() : Number
 		{
 			return ytPlayerHelper.player.getVideoBytesLoaded() / ytPlayerHelper.player.getVideoBytesTotal();
 		}
-
+		
 		// ----------------------------------
 		// currentTime
 		// ----------------------------------
@@ -73,7 +81,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		{
 			return ytPlayerHelper.player.getCurrentTime();
 		}
-
+		
 		// ----------------------------------
 		// isMute
 		// ----------------------------------
@@ -81,7 +89,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		{
 			return ytPlayerHelper.player.isMuted();
 		}
-
+		
 		public function set isMute(bool : Boolean) : void
 		{
 			if (bool)
@@ -92,8 +100,10 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 			{
 				ytPlayerHelper.player.unmute();
 			}
+			
+			dispatchEvent(new YTVideoEvent(YTVideoEvent.CHANGE_MUTE, bool));
 		}
-
+		
 		// ----------------------------------
 		// totalTime
 		// ----------------------------------
@@ -101,7 +111,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		{
 			return ytPlayerHelper.player.getDuration();
 		}
-
+		
 		// ----------------------------------
 		// state
 		// ----------------------------------
@@ -109,7 +119,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		{
 			return ytPlayerHelper.player.getPlayerState();
 		}
-
+		
 		// ----------------------------------
 		// volume
 		// ----------------------------------
@@ -117,12 +127,12 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		{
 			return ytPlayerHelper.player.getVolume();
 		}
-
+		
 		public function set volume(value : Number) : void
 		{
 			ytPlayerHelper.player.setVolume(value);
 		}
-
+		
 		// --------------------------------------------------------------------------
 		//
 		// Methods
@@ -138,11 +148,22 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 			autoStart = auto_start;
 			playable();
 		}
-
+		
+		public function setSize(w:int, h:int) : void
+		{
+			var g : Graphics = graphics;
+			g.clear();
+			g.beginFill(BG_COLOR);
+			g.drawRect(0, 0, w, h);
+			g.endFill();
+			ytPlayerHelper.player.setSize(w,h);
+		}
+		
 		public function togglePause() : void
 		{
 			switch(ytPlayerHelper.player.getPlayerState())
 			{
+				case PlayerState.CUED:
 				case PlayerState.PAUSED:
 				{
 					ytPlayerHelper.player.playVideo();
@@ -153,9 +174,10 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 					ytPlayerHelper.player.pauseVideo();
 					break;
 				}
+					
 			}
 		}
-
+		
 		public function pause() : void
 		{
 			switch(ytPlayerHelper.player.getPlayerState())
@@ -167,7 +189,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 				}
 			}
 		}
-
+		
 		public function play() : void
 		{
 			// switch(ytPlayerHelper.player.getPlayerState())
@@ -179,22 +201,22 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 			// }
 			// }
 		}
-
+		
 		public function stop() : void
 		{
 			ytPlayerHelper.player.stopVideo();
 		}
-
+		
 		public function toggleMute() : void
 		{
 			isMute = !isMute;
 		}
-
+		
 		public function seek(num : Number) : void
 		{
 			ytPlayerHelper.player.seekTo(num);
 		}
-
+		
 		public function destroy() : void
 		{
 			// TODO 未検証
@@ -202,7 +224,7 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 			ytPlayerHelper.removeEventListener(PlayerEvent.ERROR, onPlayerError);
 			ytPlayerHelper.unload();
 		}
-
+		
 		// ----------------------------------
 		// internal methods
 		// ----------------------------------
@@ -220,19 +242,16 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 				}
 			}
 		}
-
+		
 		private function init() : void
 		{
 			mouseChildren = mouseEnabled = screenMouseEnable;
-			var g : Graphics = graphics;
-			g.beginFill(BG_COLOR);
-			g.drawRect(0, 0, VIDEO_SIZE[0], VIDEO_SIZE[1]);
-			g.endFill();
+			
 			ytPlayerHelper = new PlayerLoader();
 			ytPlayerHelper.addEventListener(PlayerEvent.PLAYER_IS_READY, onPlayerReady);
 			ytPlayerHelper.loadChromelessVideoPlayer();
 		}
-
+		
 		// --------------------------------------------------------------------------
 		//
 		// Event Handler
@@ -241,19 +260,20 @@ package module.ytchromelessplayer.view.component.ytvideo.view
 		private function onPlayerReady(event : PlayerEvent) : void
 		{
 			addChild(ytPlayerHelper.player);
-			playable();
+			
 			ytPlayerHelper.removeEventListener(PlayerEvent.PLAYER_IS_READY, onPlayerReady);
 			ytPlayerHelper.player.addEventListener(PlayerEvent.STATE_CHANGE, onPlayerStateChange);
 			ytPlayerHelper.player.addEventListener(PlayerEvent.ERROR, onPlayerError);
-
+			setSize(videoSize[0], videoSize[1]);
 			dispatchEvent(new YTVideoEvent(YTVideoEvent.PLAYER_READY));
+			playable();
 		}
-
+		
 		private function onPlayerError(event : Event) : void
 		{
 			trace("info", "error: ", event);
 		}
-
+		
 		private function onPlayerStateChange(event : Event) : void
 		{
 			var youtubeEvent : Object = event;
