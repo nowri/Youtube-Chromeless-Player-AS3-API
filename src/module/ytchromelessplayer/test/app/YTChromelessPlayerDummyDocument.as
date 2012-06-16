@@ -18,15 +18,16 @@ package module.ytchromelessplayer.test.app
 		{
 //			player = new YTChromelessPlayer("playerskin1.swf", true);
 			player = new YTChromelessPlayer("playerskin2.swf", true);
+//			player = new YTChromelessPlayer("", true);// 既にPlayerSkinオブジェクトが用意してある場合
 			
 			player.x = player.y = 100;
 			addChild(player);
 			new PushButton(stage, 10, 10, "play", play);
 			new PushButton(stage, 10, 40, "stop", stop);
 			player.play("9_Yx-4zeQPI", true, true);
-			player.addEventListener(YTChromelessPlayerEvent.CHANGE_MUTE, ytChromelessPlayerEventHandler);
-			player.addEventListener(YTChromelessPlayerEvent.READY_COMPLETE_PLAYER, ytChromelessPlayerEventHandler);
-			player.addEventListener(YTChromelessPlayerEvent.UPDATE_STATUS, ytChromelessPlayerEventHandler);
+//			player.addEventListener(YTChromelessPlayerEvent.CHANGE_MUTE, ytChromelessPlayerEventHandler);
+//			player.addEventListener(YTChromelessPlayerEvent.READY_COMPLETE_PLAYER, ytChromelessPlayerEventHandler);
+//			player.addEventListener(YTChromelessPlayerEvent.UPDATE_STATUS, ytChromelessPlayerEventHandler);
 		}
 		
 		protected function ytChromelessPlayerEventHandler(e:YTChromelessPlayerEvent):void

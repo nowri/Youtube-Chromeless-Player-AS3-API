@@ -64,7 +64,11 @@ package module.ytchromelessplayer.view.mediator
 		override public function onRegister() : void
 		{
 			view.init();
-			
+			if(!view.skinSwfUrl)
+			{
+				initSkin();
+				return;
+			}
 			var loader:Loader = new Loader();
 			var info:LoaderInfo = loader.contentLoaderInfo;
 			eventMap.mapListener(info, ProgressEvent.PROGRESS, loadSwfProgressHandler, ProgressEvent);
@@ -175,6 +179,14 @@ package module.ytchromelessplayer.view.mediator
 			eventMap.mapListener(view.skin.contents.seekBar.btn, MouseEvent.MOUSE_DOWN, seekBarBtnMouseDownHandler, MouseEvent);
 			view.addChild(view.skin);
 		}
+		
+		private function initSkin():void
+		{
+			var skinSWF:MovieClip = new (getDefinitionByName(YTChromelessPlayerConstants.SKIN_CLASS))();
+			eventMap.mapListener(skinSWF, Event.EXIT_FRAME, skinSWFExitHandler, Event);
+		}
+		
+		
 		
 		// --------------------------------------------------------------------------
 		//
@@ -410,11 +422,11 @@ package module.ytchromelessplayer.view.mediator
 			eventMap.unmapListener(info, IOErrorEvent.VERIFY_ERROR, loadSwfIOErorrHandler, ProgressEvent);
 			eventMap.unmapListener(info, Event.COMPLETE, loadSwfCompleteHandler, Event);
 			
-			view.skinType = (info.content as MovieClip).skinType;
-			var skinCt:MovieClip = new (getDefinitionByName(YTChromelessPlayerConstants.SKIN_CLASS))();
-			view.skin = new PlayerSkinAdapter(skinCt);
-			view.video.addEventListener(YTVideoEvent.PLAYER_READY, playerReadyHandler);
+			initSkin();
+			
 		}
+		
+		
 		
 		private function loadSwfIOErorrHandler(e:IOErrorEvent):void
 		{
@@ -449,6 +461,15 @@ package module.ytchromelessplayer.view.mediator
 		private function loadSwfProgressHandler(e:ProgressEvent):void
 		{
 			
+		}
+		
+		private function skinSWFExitHandler(e:Event):void
+		{
+			var skinSWF:MovieClip = e.target as MovieClip;
+			eventMap.unmapListener(skinSWF, Event.EXIT_FRAME, skinSWFExitHandler);
+			view.skinType = skinSWF.skinType;
+			view.skin = new PlayerSkinAdapter(skinSWF);
+			view.video.addEventListener(YTVideoEvent.PLAYER_READY, playerReadyHandler);
 		}
 	}
 }

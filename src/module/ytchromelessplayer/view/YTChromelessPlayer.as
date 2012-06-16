@@ -31,7 +31,7 @@ package module.ytchromelessplayer.view
 		// Constructor
 		//
 		// --------------------------------------------------------------------------
-		public function YTChromelessPlayer(skin_swf_url:String, screen_mouse_enable : Boolean = false, video_size:Vector.<int>=null)
+		public function YTChromelessPlayer(skin_swf_url:String="", screen_mouse_enable : Boolean = false, video_size:Vector.<int>=null)
 		{
 			screenMouseEnable = screen_mouse_enable;
 			skinSwfUrl = skin_swf_url;
