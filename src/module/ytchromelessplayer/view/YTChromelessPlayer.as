@@ -31,6 +31,12 @@ package module.ytchromelessplayer.view
 		// Constructor
 		//
 		// --------------------------------------------------------------------------
+		
+		/**
+		 * 
+		 * @param skin_swf_url : String="" スキンSWFのURL、指定しない場合は<code>YTChromelessPlayerConstants.SKIN_CLASS</code>にリンケージしたMovieClipにリンケージしておく.
+		 * @param screen_mouse_enable : Boolean=false スクリーン上のYoutubeロゴのマウスが効くかどうか
+		 */
 		public function YTChromelessPlayer(skin_swf_url:String="", screen_mouse_enable : Boolean = false)
 		{
 			screenMouseEnable = screen_mouse_enable;
@@ -75,6 +81,13 @@ package module.ytchromelessplayer.view
 		// ----------------------------------
 		// Public API
 		// ----------------------------------
+		
+		/**
+		 * 
+		 * @param video_id:String YoutubeのVideoID
+		 * @param loop:Boolean ループ再生するか？
+		 * @param auto_start:Boolean 自動再生するか？
+		 */
 		public function play(video_id : String, loop : Boolean, auto_start : Boolean) : void
 		{
 			video.start(video_id, loop, auto_start);
