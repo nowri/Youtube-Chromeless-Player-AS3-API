@@ -423,7 +423,6 @@ package module.ytchromelessplayer.view.mediator
 			eventMap.unmapListener(info, Event.COMPLETE, loadSwfCompleteHandler, Event);
 			
 			initSkin();
-			
 		}
 		
 		

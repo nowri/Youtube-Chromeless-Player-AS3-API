@@ -31,11 +31,10 @@ package module.ytchromelessplayer.view
 		// Constructor
 		//
 		// --------------------------------------------------------------------------
-		public function YTChromelessPlayer(skin_swf_url:String="", screen_mouse_enable : Boolean = false, video_size:Vector.<int>=null)
+		public function YTChromelessPlayer(skin_swf_url:String="", screen_mouse_enable : Boolean = false)
 		{
 			screenMouseEnable = screen_mouse_enable;
 			skinSwfUrl = skin_swf_url;
-			videoSize = video_size;
 			context = new YTChromelessPlayerContext(this);
 		}
 		
@@ -52,7 +51,6 @@ package module.ytchromelessplayer.view
 		public var skinSwfUrl:String;
 		public var skinType:int;
 		private var context : YTChromelessPlayerContext;
-		private var videoSize:Vector.<int>;
 
 		//--------------------------------------------------------------------------
 		//
@@ -115,7 +113,6 @@ package module.ytchromelessplayer.view
 		public function initSkin() : void
 		{
 			addChild(skin.content);
-			
 			
 			while (skin.contents.screen.length)
 			{
